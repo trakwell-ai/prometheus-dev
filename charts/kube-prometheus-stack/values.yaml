@@ -4588,7 +4588,23 @@ prometheus:
   #      - nodes/proxy
   #    verbs: [ "get", "list", "watch" ]
 
-  additionalServiceMonitors: []
+  additionalServiceMonitors:
+    - name: trakwell-jmeter-status
+      namespace: monitoring
+      labels:
+        release: kube-prometheus-stack
+      selector:
+        matchLabels:
+          app: trakwell-jmeter-status
+      namespaceSelector:
+        matchNames:
+          - monitoring
+      endpoints:
+        - port: metrics      # must match Service port name
+          path: /metrics
+          interval: 30s
+          scheme: http
+          honorLabels: true
   ## Name of the ServiceMonitor to create
   ##
   # - name: ""
